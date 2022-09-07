@@ -55,7 +55,13 @@ const validationSchema = yup.object({
     'Your Confirm Password mush match'
     ),
   gender: yup.string().required("Gender is Required!"),
-  date: yup.date().required("Date of Birth is required"),
+  startDate: yup.date().required("start date is required"),
+  endDate: yup.date().when('startDate', (startDate, schema) => {
+    return schema.test({
+      test: endDate => new Date(startDate) < new Date(endDate),
+      message: "endDate should be > startDate"
+    })
+  }).required(),
   income: yup.string().required("Required"),
   about: yup
     .string()
@@ -162,10 +168,16 @@ const Main = () => {
          
          <div className="pt-5">
             
-         <label className="pr-10" >Date:</label>
-            <Field name="date" type="date" />
+         <label className="pr-10" >Start date:</label>
+            <Field name="startDate" type="date" />
            <div className="pl-[85px]">
-           <KErrorMessage name="date" />
+           <KErrorMessage name="startDate" />
+           </div>
+         
+         <label className="pr-10" >End date:</label>
+            <Field name="endDate" type="date" min={values.startDate} />
+           <div className="pl-[85px]">
+           <KErrorMessage name="endDate" />
            </div>
          </div>
        
