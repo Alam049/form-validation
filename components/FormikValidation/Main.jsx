@@ -81,6 +81,22 @@ const validationSchema = yup.object({
    
  
 });
+
+
+function formatDate(date) {
+  return new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
+  .toISOString()
+  .split("T")[0];
+}
+
+function addDays(_date, days) {
+  const date = new Date(_date)
+
+  date.setDate(date.getDate() + days)
+
+  return date
+}
+
 const Main = () => {
   const fileRef = useRef(null)
   return (
@@ -169,11 +185,11 @@ const Main = () => {
          <div className="pt-5">
             
          <label className="pr-10" >Start date:</label>
-            <Field name="startDate" type="date" />
+            <Field name="startDate" type="date" min={formatDate(new Date())} max={values.endDate && formatDate(addDays(values.endDate, -1))}  />
            <div className="pl-[85px]">
            <KErrorMessage name="startDate" />
            </div>
-         
+        
          <label className="pr-10" >End date:</label>
             <Field name="endDate" type="date" min={values.startDate} />
            <div className="pl-[85px]">
