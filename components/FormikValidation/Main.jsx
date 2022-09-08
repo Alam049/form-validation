@@ -13,10 +13,8 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is Required!"),
   phone: yup
     .string()
-    .matches(
-        /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/g,
-        'Not a Phone Number'
-    )
+    .min(11, "phone number must be at least 11 digits")
+    .max(12, "phone number must be at most 12 digits")
     
    
     .required("Phone is Required!"),
@@ -105,6 +103,7 @@ const Main = () => {
         validationSchema={validationSchema}
         initialValues={{
           name: "",
+          phoneCode: '+62',
           phone: "",
           file:null,
           password: "",
@@ -117,6 +116,11 @@ const Main = () => {
         }}
         onSubmit={(values) => {
           console.log(values);
+
+          const phone = values.phoneCode + values.phone
+
+          console.log(phone)
+
         }}
       >
         {({ values ,setFieldValue}) => (
@@ -132,7 +136,12 @@ const Main = () => {
 
            <div className="pt-5"> 
            <label>Phone:</label>
-            <Field className="border border-black py-2  ml-7  px-2 w-[300px] rounded-md" name="phone" type="number" />
+           <div className="flex">
+            <Field as='select' className="w-[4rem] border border-black py-2 ml-7  px-2 w-[300px] rounded-md rounded-br-none rounded-tr-none border-r-0" name="phoneCode">
+              <option value="+62">+62</option>
+             </Field>
+            <Field className="border border-black py-2 px-2 w-[300px] rounded-md rounded-bl-none rounded-tl-none" name="phone" type="number" />
+           </div>
             <div className="pl-[86px]">
             <KErrorMessage name="phone" />
             </div>
