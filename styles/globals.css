@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input:focus {
+  outline: none !important;
+  border: 1px solid #0074cc;
+}
+
+.input2:focus {
+  outline: none !important;
+  border: 1px solid #ff2626;
+}
